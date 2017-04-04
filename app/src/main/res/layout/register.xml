@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingLeft="20dip"
+    android:paddingRight="20dip"
+    android:paddingTop="20dip"
+    android:gravity="center_horizontal"
+    android:background="@drawable/register_background"
+    >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:background="@drawable/all_input" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:text="学校："
+            android:textSize="18sp"
+            android:textColor="#343434"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/school"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="3dip"
+            android:imeOptions="actionNext"
+            android:background="#ffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dip"
+        android:background="@drawable/all_input" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:text="设置密码："
+            android:textSize="18sp"
+            android:textColor="#343434"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/passwordset"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="3dip"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:background="#ffff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:background="@drawable/all_input" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:text="重输密码："
+            android:textSize="18sp"
+            android:textColor="#343434"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/passwordagaint"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="3dip"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:background="#ffff" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dip"
+        android:background="@drawable/all_input" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:text="教师名字："
+            android:textSize="18sp"
+            android:textColor="#343434"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/teacherName"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:imeOptions="actionNext"
+            android:layout_margin="3dip"
+            android:background="#ffff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:background="@drawable/all_input" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:text="手机号码："
+            android:textSize="18sp"
+            android:textColor="#343434"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/phonenumber"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="3dip"
+            android:imeOptions="actionNext"
+            android:inputType="phone"
+            android:background="#ffff" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/registerOk"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:layout_marginTop="10dip"
+        android:text="注册完成"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:background="@drawable/button_selector" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:layout_marginTop="10dip"
+        android:text="返回"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:background="@drawable/button_selector" />
+</LinearLayout>

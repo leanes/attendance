@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector  
+ xmlns:android="http://schemas.android.com/apk/res/android"
+ android:id="@+id/mayor_selector" >
+   
+  <item 
+    android:state_focused="false" 
+    android:state_selected="false" 
+    android:state_pressed="false"
+    android:state_enabled="true"
+    android:drawable="@drawable/button2_off" />
+     
+  <item 
+    android:state_focused="false" 
+    android:state_selected="true"
+    android:state_pressed="false"
+    android:state_enabled="true"
+    android:drawable="@drawable/button2_off" />
+
+  <item 
+    android:state_focused="true" 
+    android:state_selected="false"
+    android:state_pressed="false" 
+    android:state_enabled="true"
+    android:drawable="@drawable/button_on" />
+    
+  <item 
+    android:state_focused="true" 
+    android:state_selected="true"
+    android:state_pressed="false" 
+    android:state_enabled="true"
+    android:drawable="@drawable/button_on" />
+
+  <!-- Pressed -->
+  <item 
+    android:state_pressed="true" 
+    android:drawable="@drawable/button_on" />
+    
+  <!-- Disabled -->
+  <item 
+    android:state_enabled="false" 
+    android:drawable="@drawable/button_disable" />
+ 
+</selector>
