@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 
 import com.example.attendance.adapter.GvContentAdapter;
 import com.example.attendance.adapter.GvDateAdapter;
@@ -25,6 +26,7 @@ import com.example.attendance.test.MyGridView ;
 public class TableActivity extends Activity {
     private GridView gvDate , gvContent ;
     private MyGridView lvNum ;
+    private ImageButton refresh ;
     private MySchedule mySchedule ;
 
     @Override
@@ -38,7 +40,7 @@ public class TableActivity extends Activity {
                 openAlter(position) ;
             }
         });
-        mySchedule.read() ;
+        mySchedule.read(2) ;
     }
 private String TAG = "TableActivity" ;
     private void openAlter(final int position) {
@@ -87,6 +89,14 @@ private String TAG = "TableActivity" ;
     private void init() {
         gvDate = (GridView) findViewById(R.id.gvDate);
         gvDate.setAdapter(new GvDateAdapter(TableActivity.this));
+
+        refresh = (ImageButton) findViewById(R.id.refresh);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mySchedule.read(1);
+            }
+        });
 
         lvNum = (MyGridView) findViewById(R.id.lvNum);
         lvNum.setAdapter(new LvNumAdapter(TableActivity.this));

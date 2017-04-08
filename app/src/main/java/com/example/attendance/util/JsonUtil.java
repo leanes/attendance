@@ -2,6 +2,7 @@ package com.example.attendance.util;
 
 import com.example.attendance.bean.Attendance;
 import com.example.attendance.bean.Coordinate;
+import com.example.attendance.bean.Teachers;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,14 +21,10 @@ public class JsonUtil {
      */
     public static void dataParse(String data , ArrayList<Coordinate> list) {
         try {
-            JSONObject jsonObject = new JSONObject(data) ;
-            JSONArray jsonArray = jsonObject.optJSONArray("coordinate") ;
-          //  JSONArray jsonArray = new JSONArray(data) ;
+            JSONArray jsonArray = new JSONArray(data) ;
             for (int i = 0 ; i < jsonArray.length() ; i++){
                 JSONObject object = jsonArray.optJSONObject(i) ;
-
                 Coordinate coordinate = new Coordinate();
-
                 coordinate.setPosition( object.optInt("position")) ;
                 coordinate.setClassName(object.optString("className"));
                 coordinate.setClassNum(object.optInt("classNum"));
@@ -46,8 +43,23 @@ public class JsonUtil {
      * @param coordinates
      * @return
      */
-    public static JSONObject dataCreate(ArrayList<Coordinate> coordinates) {
+    public static String dataCreate(Coordinate coordinates) {
         JSONObject jsonObject = new JSONObject() ;
+        try {
+            jsonObject.put("position" , coordinates.getPosition()) ;
+            jsonObject.put("classNum" , coordinates.getClassNum()) ;
+            jsonObject.put("className" , coordinates.getClassName()) ;
+            jsonObject.put("classRoom" , coordinates.getClassRoom()) ;
+            jsonObject.put("grade" , coordinates.getGrade()) ;
+            jsonObject.put("week" , coordinates.getWeek()) ;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String s = jsonObject.toString() ;
+        return s ;
+
+
+       /* JSONObject jsonObject = new JSONObject() ;
         try {
             JSONArray jsonArray = new JSONArray() ;
             for (int i = 0 ; i < coordinates.size() ; i++)
@@ -66,7 +78,40 @@ public class JsonUtil {
             e.printStackTrace();
         }
 
-        return jsonObject;
+        return jsonObject;*/
+    }
+
+    /**
+     * 注册JSON的生成
+     */
+    public static String registerCreate(Teachers teachers){
+        JSONObject jsonObject = new JSONObject() ;
+        try {
+            jsonObject.put("userName" , teachers.getUserName()) ;
+            jsonObject.put("userPwd" , teachers.getUserPwd()) ;
+            jsonObject.put("schoolName" , teachers.getSchoolName()) ;
+            jsonObject.put("phoneNumber" , teachers.getPhoneNumber()) ;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String s = jsonObject.toString() ;
+        return s ;
+    }
+
+    /**
+     * 登录生成的JSON
+     */
+    public static String loginCreate(Teachers teachers){
+        JSONObject jsonObject = new JSONObject() ;
+        try {
+            jsonObject.put("phoneNumber" , teachers.getPhoneNumber()) ;
+            jsonObject.put("userPwd" , teachers.getUserPwd()) ;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String s = jsonObject.toString() ;
+        return s ;
+
     }
 
 
@@ -87,6 +132,26 @@ public class JsonUtil {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public static JSONObject dataSave(ArrayList<Coordinate> coordinates) {
+        JSONObject object = new JSONObject() ;
+        try {
+            for (int i = 0 ; i < coordinates.size() ; i++)
+            {
+                object.put("position" , coordinates.get(i).getPosition()) ;
+                object.put("classNum" , coordinates.get(i).getClassNum()) ;
+                object.put("className" , coordinates.get(i).getClassName()) ;
+                object.put("classRoom" , coordinates.get(i).getClassRoom()) ;
+                object.put("grade" , coordinates.get(i).getGrade()) ;
+                object.put("week" , coordinates.get(i).getWeek()) ;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return object;
 
     }
 }
