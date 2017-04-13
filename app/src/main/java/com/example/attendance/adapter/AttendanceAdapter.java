@@ -11,23 +11,25 @@ import com.example.attendance.R;
 import com.example.attendance.bean.Attendance;
 import com.example.attendance.bean.Coordinate;
 import com.example.attendance.bean.Students;
+import com.example.attendance.bean.WeeksNum;
 
 import java.util.List;
 
 /**
  * Created by 陈振聪 on 2017/3/23.
  */
-public class AttendanceAdapter extends ArrayAdapter<Attendance> {
+public class AttendanceAdapter extends ArrayAdapter<WeeksNum> {
     private int resourceId ;
 
-    public AttendanceAdapter(Context context, int resource, List<Attendance> objects) {
+    public AttendanceAdapter(Context context, int resource, List<WeeksNum> objects) {
         super(context, resource, objects);
         resourceId = resource ;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Attendance attendance = getItem(position);
+        WeeksNum weeksNum = getItem(position) ;
+//        Coordinate coordinate = getItem(position);
         View view;
         ViewHolder holder;
         if (convertView == null) {
@@ -40,16 +42,12 @@ public class AttendanceAdapter extends ArrayAdapter<Attendance> {
             view = convertView;
             holder = (ViewHolder) view.getTag();
         }
-        holder.attendance_time.setText(attendance.getAttendanceDate());
-        int num = getNum();
+        holder.attendance_time.setText(weeksNum.getWeeks()) ;
+        holder.attendance_num.setText(weeksNum.getAttendance_num()+"人");
 
-        return super.getView(position, convertView, parent);
+        return view ;
     }
 
-    public int getNum() {
-
-        return 0;
-    }
 
     class ViewHolder{
         TextView attendance_time ;

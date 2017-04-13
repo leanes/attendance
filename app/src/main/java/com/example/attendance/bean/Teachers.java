@@ -4,13 +4,13 @@ package com.example.attendance.bean;
  * Created by 陈振聪 on 2017/4/8.
  */
 public class Teachers {
-    private String userName;            //教师名字
+    private String classTeacher;            //教师名字
     private String userPwd;                //密码
     private String schoolName ;             //学校名字
     private String phoneNumber ;            //手机号码
 
-    public Teachers(String userName, String userPwd, String schoolName, String phoneNumber) {
-        this.userName = userName;
+    public Teachers(String classTeacher, String userPwd, String schoolName, String phoneNumber) {
+        this.classTeacher = classTeacher;
         this.userPwd = userPwd;
         this.schoolName = schoolName;
         this.phoneNumber = phoneNumber;
@@ -21,12 +21,12 @@ public class Teachers {
         this.userPwd = userPwd;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getClassTeacher() {
+        return classTeacher;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setClassTeacher(String classTeacher) {
+        this.classTeacher = classTeacher;
     }
 
     public String getUserPwd() {

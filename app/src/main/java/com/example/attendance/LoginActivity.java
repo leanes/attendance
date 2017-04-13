@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.attendance.bean.Teachers;
-import com.example.attendance.db.UserDataManager;
 import com.example.attendance.util.UrlConstance;
 
 import org.json.JSONException;
@@ -47,7 +46,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Teachers teachers ;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    private UserDataManager mUserDataManager ;
+
     private String userName ;
     private String password ;
 
@@ -169,6 +168,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             loginProgress.setCanceledOnTouchOutside(false);
             loginProgress.setMessage("登陆中...");
             loginProgress.show();
+
             userName = userEditext.getText().toString().trim() ;
             password = passwordEditext.getText().toString().trim() ;
             teachers = new Teachers(userName , password) ;
@@ -180,6 +180,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
        new Thread(new Runnable() {
            @Override
            public void run() {
+               try {
+                   Thread.sleep(2000);
+               } catch (InterruptedException e) {
+                   e.printStackTrace();
+               }
                OkHttpClient client = new OkHttpClient() ;
                String json = loginCreate(teachers) ;
                RequestBody body = RequestBody.create(JSON , json) ;
@@ -238,27 +243,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return true ;
     }
 
-    @Override
-    protected void onResume() {
-        if (mUserDataManager == null) {
-            mUserDataManager = new UserDataManager(this);
-            mUserDataManager.openDataBase();
-        }
-        super.onResume();
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    @Override
-    protected void onPause() {
-        if (mUserDataManager != null) {
-            mUserDataManager.closeDataBase();
-            mUserDataManager = null;
-        }
-        super.onPause();
     }
 
 

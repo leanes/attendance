@@ -31,7 +31,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import com.example.attendance.bean.Coordinate ;
 import com.example.attendance.util.JsonUtil;
@@ -53,6 +55,7 @@ import static com.example.attendance.util.JsonUtil.dataCreate;
 public class MySchedule extends ViewGroup {
     private Context context ;
     private ArrayList<Coordinate> list ;
+    private ArrayList<TextView>textViewList ;
     private static final String file_path = "/coursetable.txt" ;            //存储路径
 
 
@@ -61,6 +64,7 @@ public class MySchedule extends ViewGroup {
     public static final int UPLOAD_COURSES = 2 ;
     public static final int SAVE_COURSES = 3 ;
     public static final int DELETE_COURSES = 4 ;
+    public static final int TEST = 5 ;
 
 
 
@@ -68,9 +72,9 @@ public class MySchedule extends ViewGroup {
         super(context, attrs);
         this.context = context ;
         list = new ArrayList<>() ;
+        textViewList = new ArrayList<>() ;
     }
 
-    //根据List中存储的课程信息，依次添加TextView
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int childNum = getChildCount();
@@ -101,24 +105,34 @@ public class MySchedule extends ViewGroup {
         public void handleMessage(Message msg) {
             switch(msg.what) {
                 case ADD_VIEW :
-                    ArrayList<Coordinate>arrayList = (ArrayList<Coordinate>) msg.obj;
-                    hanleAddViewResult(arrayList);
+//                    ArrayList<Coordinate>arrayList = (ArrayList<Coordinate>) msg.obj;
+                    list = (ArrayList<Coordinate>) msg.obj;
+                    hanleAddViewResult(list);
                     break;
                 case UPLOAD_COURSES :
                     JSONObject json = (JSONObject) msg.obj;
                     handleUploadResult(json) ;
                     break;
                 case SAVE_COURSES :
-                    ArrayList<Coordinate>saveList = (ArrayList<Coordinate>) msg.obj;
-                    save(saveList) ;
+                    list = (ArrayList<Coordinate>) msg.obj;
+                    save() ;
                     break;
                 case DELETE_COURSES :
                     JSONObject deletejson = (JSONObject) msg.obj;
                     handleDeleteResult(deletejson) ;
+                    break;
+                case TEST :
+                    Toast.makeText(getContext() , "chen",Toast.LENGTH_SHORT).show();
+                    String string = (String) msg.obj;
+                    handleTestResult(string);
 
             }
         }
     };
+
+    private void handleTestResult(String json) {
+        Toast.makeText(getContext() , json , Toast.LENGTH_SHORT).show();
+    }
 
     private void handleDeleteResult(JSONObject deletejson) {
         /*
@@ -148,16 +162,18 @@ public class MySchedule extends ViewGroup {
         }
     }
 
-    private void save(ArrayList<Coordinate> saveList) {
-        JSONObject jsonObject = JsonUtil.dataSave(saveList) ;
+    private void save() {
+        String json = JsonUtil.dataSave(list) ;
+//        JSONObject jsonObject = JsonUtil.dataSave(list) ;
         File sdDir = null ;
         boolean sdCardExist = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) ;     //判断SD卡是否存在
         if (sdCardExist){
             sdDir = Environment.getExternalStorageDirectory() ; //获取根目录
             FileOutputStream fout = null ;
             try {
-                fout = new FileOutputStream(sdDir + file_path) ;
-                byte[] bytes = jsonObject.toString().getBytes() ;
+                fout = new FileOutputStream(sdDir + file_path , false) ;
+//                byte[] bytes = jsonObject.toString().getBytes() ;
+                byte[] bytes = json.getBytes() ;
                 fout.write(bytes);
                 fout.close();
             } catch (FileNotFoundException e) {
@@ -199,15 +215,21 @@ public class MySchedule extends ViewGroup {
     }
 
     private void hanleAddViewResult(ArrayList<Coordinate> arrayList) {
-        for (int i = 0 ; i < arrayList.size() ; i++)
+        for (TextView textView : textViewList ){
+            removeView(textView);
+        }
+        for (int i = 0 ; i < list.size() ; i++)
         {
             addView(arrayList.get(i));
         }
+        Toast.makeText(getContext() , "刷新成功" , Toast.LENGTH_SHORT).show();
     }
 
     //外部调用的、用于添加组件（课程）的方法
     public void addToList(final Coordinate coordinate){
+        list.add(coordinate) ;
         addView(coordinate);
+        save();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -215,7 +237,7 @@ public class MySchedule extends ViewGroup {
                 String json = dataCreate(coordinate) ;
                 RequestBody body = RequestBody.create(JSON , json) ;
                 Request request = new Request.Builder()
-                        .url(UrlConstance.COURSES_INFO)
+                        .url(UrlConstance.COURSES_UP)
                         .post(body)
                         .build() ;
                 Call call = client.newCall(request) ;
@@ -249,7 +271,7 @@ public class MySchedule extends ViewGroup {
     private void addView(final Coordinate coordinate) {
         TextView tv = new TextView(context) ;
         tv.setText(coordinate.getClassName()  + "\n" + "@" + coordinate.getClassRoom()  + "\n"
-                + "#" + coordinate.getGrade()  + "\n" + "&" + coordinate.getWeek());
+                + "#" + coordinate.getGrade()  + "\n" + "&" + coordinate.getWeek() );
         tv.setBackgroundColor(randomColor());
         tv.setGravity(Gravity.CENTER);
         tv.setTextColor(Color.parseColor("#ffffff"));
@@ -263,11 +285,13 @@ public class MySchedule extends ViewGroup {
                         coordinate.getClassRoom() , coordinate.getGrade() , coordinate.getWeek() ) ;
             }
         });
+        textViewList.add(tv) ;
         addView(tv) ;
     }
 
     //查看课程信息
-    private void openAlter(final int position, final String className , final String classRoom , final String grade , final String week) {
+    private void openAlter(final int position, final String className , final String classRoom , final String grade ,
+                           final String week) {
         final AlertDialog alertDialog = new AlertDialog.Builder(context).create() ;
         alertDialog.show();
         alertDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
@@ -286,6 +310,7 @@ public class MySchedule extends ViewGroup {
 
         TextView tvWeek = (TextView) window.findViewById(R.id.tvWeek);
         tvWeek.setText(week);
+
 
 
 
@@ -405,7 +430,7 @@ public class MySchedule extends ViewGroup {
                 removeView(getChildAt(i));
             }
         }
-        save(list);
+        save();
     }
 
     //随机生成颜色
@@ -453,7 +478,6 @@ public class MySchedule extends ViewGroup {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -462,15 +486,22 @@ public class MySchedule extends ViewGroup {
             @Override
             public void run() {
                 OkHttpClient client = new OkHttpClient() ;
+//                OkHttpClient client = new OkHttpClient() ;
+//                String json2 = "{\"classTeacher\":电脑}"  ;
+//                RequestBody body = RequestBody.create(JSON , json2) ;
+
                 Request request = new Request.Builder()
-                        .url(UrlConstance.COURSES_INFO)
+//                        .url(UrlConstance.COURSES_INFO)
+//                        .post(body)
+                        .url("http://192.168.191.1:8080/coursetable.json")
                         .build() ;
                 Call call = client.newCall(request) ;
                 call.enqueue(new Callback() {
                     //请求失败回调
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Toast.makeText(getContext(), "请求失败" , Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), "请求失败" , Toast.LENGTH_SHORT).show();
+                        /*sendMessage(TEST , "" );*/
 
                     }
 
@@ -479,9 +510,21 @@ public class MySchedule extends ViewGroup {
                     public void onResponse(Call call, Response response) throws IOException {
                         if (response.isSuccessful()){
                             String responseData = response.body().string() ;
+//                            ArrayList<Coordinate> arrayList = new ArrayList<Coordinate>() ;
                             JsonUtil.dataParse(responseData , list) ;
+//                            list = arrayList ;
+
                             sendMessage(ADD_VIEW , list);
                             sendMessage(SAVE_COURSES , list);
+                            /*JSONObject jsonObject = null;
+                            try {
+                                jsonObject = new JSONObject(responseData);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            sendMessage(TEST, jsonObject);*/
+//                            sendMessage(TEST , responseData);
+
                         }
                     }
                 });

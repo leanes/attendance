@@ -28,6 +28,7 @@ public class TableActivity extends Activity {
     private MyGridView lvNum ;
     private ImageButton refresh ;
     private MySchedule mySchedule ;
+    private boolean isClick = false ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,18 @@ public class TableActivity extends Activity {
                 openAlter(position) ;
             }
         });
-        mySchedule.read(2) ;
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mySchedule.read(1);
+                isClick = true;
+            }
+        });
+
+        if (!isClick){
+            mySchedule.read(2);
+        }
+        /*mySchedule.read(2) ;*/
     }
 private String TAG = "TableActivity" ;
     private void openAlter(final int position) {
@@ -69,9 +81,6 @@ private String TAG = "TableActivity" ;
                         Coordinate coordinate = new Coordinate(position , num , etName.getText().toString(),
                                 etClass.getText().toString() , etRoom.getText().toString() , etWeek.getText().toString()) ;
                         mySchedule.addToList(coordinate) ;
-                        Log.d(TAG, "coordinate.getClassRoom() = " + coordinate.getClassRoom() );
-                        Log.d(TAG, "coordinate.getGrade() = " + coordinate.getGrade() );
-                        Log.d(TAG, "coordinate.getWeek() = " + coordinate.getWeek() );
                         alertDialog.dismiss();
                     }
                 }
@@ -91,12 +100,7 @@ private String TAG = "TableActivity" ;
         gvDate.setAdapter(new GvDateAdapter(TableActivity.this));
 
         refresh = (ImageButton) findViewById(R.id.refresh);
-        refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mySchedule.read(1);
-            }
-        });
+
 
         lvNum = (MyGridView) findViewById(R.id.lvNum);
         lvNum.setAdapter(new LvNumAdapter(TableActivity.this));

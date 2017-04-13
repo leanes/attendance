@@ -47,7 +47,7 @@ public class ExcelSchedule {
 
     public static void writeExcelSchedule(Context context, List<Coordinate> coordinates) {
         mContext = context ;
-        String[] title = {"编号", "课程", "课室", "班级" , "节数" , "哪周"};
+        String[] title = {"编号", "课 程 名 称", "  课  室  ", " 上 课 班 级 " , "  节  数  " , " 哪 几 周 "};
         File sdDir = null ;
         StringBuilder stringBuilder = new StringBuilder() ;
         sdDir = Environment.getExternalStorageDirectory(); //获取根目录
@@ -107,8 +107,7 @@ public class ExcelSchedule {
 
     private static void setData(String jsonStr) {
         try {
-            JSONObject object = new JSONObject(jsonStr);
-            JSONArray jsonArray = object.optJSONArray("coordinate") ;
+            JSONArray jsonArray = new JSONArray(jsonStr) ;
             int len = jsonArray.length() ;;
             for (int i = 0 ; i < len ; i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);

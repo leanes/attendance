@@ -4,17 +4,19 @@ package com.example.attendance.util;
  * Created by 陈振聪 on 2017/4/8.
  */
 public class UrlConstance {
-    public static final String APP_URL = "http://pbyy5f.natappfree.cc/";
+    public static final String APP_URL = "http://8whra3.natappfree.cc/";
 
     //4.6注册用户接口
     public static final String REGIST_INFO = APP_URL + "teacher/register" ;
 
     //4.8登录用户接口
-    public static final String LOGIN_INFO = "http://pbyy5f.natappfree.cc/teacher/login";
+    public static final String LOGIN_INFO = APP_URL + "teacher/login";
 
-    //上传课程表接口
-    public static final String COURSES_INFO = APP_URL + "c" ;
+    //查询课程表接口
+    public static final String COURSES_INFO = APP_URL + "teacher/coursemsg?classTeacher=电脑" ;
 
+    //上传课程接口
+    public static final String COURSES_UP = APP_URL + "sf" ;
     //访问课程表接口
     public static final String COURSES_URL = APP_URL + "coure" ;
 

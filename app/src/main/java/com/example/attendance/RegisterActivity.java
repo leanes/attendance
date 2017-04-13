@@ -12,13 +12,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.attendance.bean.Teachers;
-import com.example.attendance.db.UserDataManager;
 import com.example.attendance.util.UrlConstance;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -47,7 +47,6 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
 
     private Teachers teachers ;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    private UserDataManager userDataManager ;
 
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -86,10 +85,9 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
 
         if(result == 1) {
             progress.dismiss();
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
             RegisterActivity.this.finish();
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+
             return;
         }
 
@@ -152,6 +150,15 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+               /* OkHttpClient client = new OkHttpClient.Builder()
+                        .connectTimeout(40 , TimeUnit.SECONDS)
+                        .readTimeout(60 , TimeUnit.SECONDS)
+                        .build() ;*/
                 OkHttpClient client = new OkHttpClient() ;
                 String json = registerCreate(teachers) ;
                 RequestBody body = RequestBody.create(JSON , json) ;
@@ -226,10 +233,6 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
 
     @Override
     protected void onResume() {
-        if (userDataManager == null) {
-            userDataManager = new UserDataManager(this);
-            userDataManager.openDataBase();
-        }
         super.onResume();
     }
 
@@ -240,10 +243,6 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
 
     @Override
     protected void onPause() {
-        if (userDataManager != null) {
-            userDataManager.closeDataBase();
-            userDataManager = null;
-        }
 
         super.onPause();
     }
