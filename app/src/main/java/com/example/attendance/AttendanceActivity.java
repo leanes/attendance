@@ -16,6 +16,7 @@ import com.example.attendance.adapter.AttendanceAdapter;
 import com.example.attendance.bean.Coordinate;
 import com.example.attendance.bean.Students;
 import com.example.attendance.bean.WeeksNum;
+import com.example.attendance.test.ExcelAttendance;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,7 @@ public class AttendanceActivity extends AppCompatActivity {
     private ArrayList<WeeksNum>weeksNumArrayList ;
     private ArrayList<Students>studentsArrayList ;
     private ListView listView ;
+    private int tag = 0 ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +35,7 @@ public class AttendanceActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         final Intent intent = getIntent() ;
         Bundle bundle = intent.getExtras() ;
+        tag = bundle.getInt("tag") ;
 //        weeksNumArrayList = (ArrayList<WeeksNum>) bundle.getSerializable("weekNa");
         coordinate = (Coordinate) bundle.getSerializable("coordinate");
         weeksNumArrayList = coordinate.getWeeksNumArrayList() ;
@@ -43,16 +46,29 @@ public class AttendanceActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 WeeksNum weeksNum = weeksNumArrayList.get(position) ;
-                Intent intentReport = new Intent(AttendanceActivity.this , ReportActivity.class) ;
-                intentReport.putExtra("weekNum" , weeksNum) ;
-                startActivity(intentReport) ;
+                if (tag == 1){
+                    Intent intentReport = new Intent(AttendanceActivity.this , ReportActivity.class) ;
+                    intentReport.putExtra("weekNum" , weeksNum) ;
+                    startActivity(intentReport) ;
+                }else if (tag == 2){
+                    String className = coordinate.getClassName() ;
+                    int section = coordinate.getPosition()/7 + 1;
+                    int week = coordinate.getPosition()%7 + 1 ;
+                    String weeks = weeksNum.getWeeks() ;
+                    ArrayList<Students>studentses = weeksNum.getStudentsArrayList() ;
+                    ExcelAttendance.writeExcelAttendance(AttendanceActivity.this , studentses , "/"+className+weeks+"周"+week+"第"+section+"节"+".xlsx");
+                }
+
             }
         });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar , menu) ;
+        if (tag == 1){
+            getMenuInflater().inflate(R.menu.toolbar , menu) ;
+        }
+
         return true ;
     }
 
@@ -64,7 +80,6 @@ public class AttendanceActivity extends AppCompatActivity {
                 startActivity(code);
                 break;
         }
-
         return true ;
     }
 }

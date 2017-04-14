@@ -1,7 +1,10 @@
 package com.example.attendance.util;
 
+import android.util.Log;
+
 import com.example.attendance.bean.Attendance;
 import com.example.attendance.bean.Coordinate;
+import com.example.attendance.bean.Grade;
 import com.example.attendance.bean.Students;
 import com.example.attendance.bean.Teachers;
 import com.example.attendance.bean.WeeksNum;
@@ -214,6 +217,38 @@ public class JsonUtil {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * 班级学生的JSON解析
+     * @param data
+     * @param list
+     */
+    public static void parseGradeStudent(String data , ArrayList<Grade>list) {
+        try {
+            list.clear();
+            JSONArray gradeArray = new JSONArray(data);
+            for (int p = 0; p < gradeArray.length(); p++) {
+                JSONObject gradeObject = gradeArray.getJSONObject(p);
+                Grade grade = new Grade();
+                grade.setGrade(gradeObject.getString("grade"));
+                ArrayList<Students>studentses = new ArrayList<>() ;
+                JSONArray jsonArray = gradeObject.getJSONArray("students");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject object = jsonArray.getJSONObject(i);
+                    Students students = new Students() ;
+                    students.setStudent_name(object.getString("student_name"));
+                    students.setStudent_id(object.getString("student_id"));
+                    students.setGrade(object.getString("grade"));
+                    studentses.add(students);
+                    grade.setStudentsList(studentses) ;
+                    grade.setStudents(students);
+                }
+                list.add(grade);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 

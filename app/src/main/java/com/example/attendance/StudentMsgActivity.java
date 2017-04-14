@@ -1,5 +1,6 @@
 package com.example.attendance;
 
+import android.content.Intent;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.attendance.R;
 import com.example.attendance.adapter.StudentAdapter;
+import com.example.attendance.bean.Grade;
 import com.example.attendance.bean.Students;
 import com.example.attendance.test.ExcelStudent;
 
@@ -37,7 +39,8 @@ import okhttp3.Response;
 public class StudentMsgActivity extends AppCompatActivity {
     private Button exportbtn ;
     private ListView studentListView ;
-    private List<Students> list ;
+    private ArrayList<Students> list ;
+    private Grade grade ;
     private  static final String path_name = "/student.txt" ;
     File sdDir = Environment.getExternalStorageDirectory() ; //获取根目录
     StringBuilder stringBuilder = new StringBuilder() ;
@@ -46,19 +49,23 @@ public class StudentMsgActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_msg);
-        list = new ArrayList<>() ;
         studentListView = (ListView) findViewById(R.id.student_list);
         exportbtn = (Button) findViewById(R.id.export_student);
-        checkStdent() ;
+        Intent intent = getIntent() ;
+        Bundle bundle = intent.getExtras() ;
+        grade = (Grade) bundle.getSerializable("grade");
+        list = grade.getStudentsList() ;
+        StudentAdapter adapter = new StudentAdapter(StudentMsgActivity.this , R.layout.student_list , list) ;
+        studentListView.setAdapter(adapter);
         exportbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ExcelStudent.writeExcelStudent(StudentMsgActivity.this , list);
+                ExcelStudent.writeExcelStudent(StudentMsgActivity.this , list , "/"+grade.getGrade()+".xlsx");
             }
         });
 
     }
-    private void checkStdent() {
+   /* private void checkStdent() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -122,7 +129,7 @@ public class StudentMsgActivity extends AppCompatActivity {
                             });
                         }
                     });
-                   /* Response response = client.newCall(request).execute() ;
+                   *//* Response response = client.newCall(request).execute() ;
                     String responseData = response.body().string() ;
                     parseJSONWithJSONObject(responseData) ;
 
@@ -140,7 +147,7 @@ public class StudentMsgActivity extends AppCompatActivity {
                         public void run() {
                             setListAdapter() ;
                         }
-                    });*/
+                    });*//*
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -153,7 +160,8 @@ public class StudentMsgActivity extends AppCompatActivity {
         StudentAdapter adapter = new StudentAdapter(StudentMsgActivity.this , R.layout.student_list , list) ;
         studentListView.setAdapter(adapter);
     }
-
+*/
+/*
     private void parseJSONWithJSONObject(String jsonData) {
         try {
             JSONArray jsonArray = new JSONArray(jsonData) ;
@@ -174,6 +182,7 @@ public class StudentMsgActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+*/
 
 
 }

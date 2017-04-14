@@ -44,6 +44,7 @@ public class HomeActivity extends Activity{
                         break;
                     case 1 :
                         Intent attend = new Intent(HomeActivity.this , AttendHomeActivity.class) ;
+                        attend.putExtra("tag" , 1) ;
                         startActivity(attend);
                         break;
                     case 2 :

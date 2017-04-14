@@ -30,7 +30,8 @@
             android:label="考勤记录"
             android:theme="@style/AttendanceActivity" />
         <activity android:name=".ReportActivity" />
-        <activity android:name=".QrCodeActivity"></activity>
+        <activity android:name=".QrCodeActivity" />
+        <activity android:name=".GradeStudentActivity"></activity>
     </application>
 
 </manifest>

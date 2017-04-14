@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import jxl.Workbook;
@@ -30,19 +31,17 @@ import jxl.write.WriteException;
  * Created by 陈振聪 on 2017/3/17.
  */
 public class ExcelStudent {
-    private static final String excle_name = "/student.xlsx";
     private static Context mContext;
     private static WritableSheet sheet;
 
-    public static void writeExcelStudent(Context context, List<Students> studentses) {
+    public static void writeExcelStudent(Context context, ArrayList<Students> studentses , String excel_name) {
         mContext = context;
         String[] title = {"班级", "姓名", "学号"};
         File sdDir = null;
-        StringBuilder stringBuilder = new StringBuilder();
         sdDir = Environment.getExternalStorageDirectory(); //获取根目录
         boolean sdCardExist = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);     //判断SD卡是否存在
         if (sdCardExist) {
-            File file = new File(sdDir + excle_name);
+            File file = new File(sdDir + excel_name);
             //创建Excel工作表
             WritableWorkbook wwbook = null;
             try {

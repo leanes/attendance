@@ -47,8 +47,13 @@ public class GuideTableActivity extends Activity {
                         List<Coordinate>coordinates = new ArrayList<Coordinate>() ;
                         ExcelSchedule.writeExcelSchedule(GuideTableActivity.this, coordinates); ;
                         break;
+                    case 1:
+                        Intent attendance = new Intent(GuideTableActivity.this , AttendHomeActivity.class) ;
+                        attendance.putExtra("tag" , 2) ;
+                        startActivity(attendance);
+                        break;
                     case 2 :
-                        Intent intent = new Intent(GuideTableActivity.this , StudentMsgActivity.class) ;
+                        Intent intent = new Intent(GuideTableActivity.this , GradeStudentActivity.class) ;
                         startActivity(intent);
                         break;
                     default:

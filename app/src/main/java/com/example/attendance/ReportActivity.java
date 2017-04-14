@@ -11,6 +11,9 @@ import com.example.attendance.bean.WeeksNum;
 
 import java.util.ArrayList;
 
+/**
+ * 详细罗列考勤学生信息
+ */
 public class ReportActivity extends AppCompatActivity {
     private WeeksNum weeksNum ;
     private ListView listView ;
