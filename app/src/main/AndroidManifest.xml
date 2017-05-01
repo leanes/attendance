@@ -12,26 +12,50 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomeActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".RegisterActivity" />
-        <!-- <activity android:name=".HomeActivity" /> -->
-        <activity android:name=".TableActivity" />
-        <activity android:name=".AttendHomeActivity" />
-        <activity android:name=".GuideTableActivity" />
-        <activity android:name=".StudentMsgActivity" />
+
+        <activity android:name=".HomeActivity"/>
+
+        <activity android:name=".TableActivity"
+            android:theme="@style/NoActionBar"/>
+
+        <activity android:name=".AttendHomeActivity"
+            android:theme="@style/NoActionBar"/>
+
+        <activity android:name=".GuideTableActivity"
+            android:theme="@style/NoActionBar"/>
+
+        <activity android:name=".StudentMsgActivity"
+            android:theme="@style/NoActionBar"/>
+
         <activity
             android:name=".AttendanceActivity"
-            android:label="考勤记录"
-            android:theme="@style/AttendanceActivity" />
-        <activity android:name=".ReportActivity" />
-        <activity android:name=".QrCodeActivity" />
-        <activity android:name=".GradeStudentActivity"></activity>
+            android:theme="@style/NoActionBar" />
+
+        <activity android:name=".ReportActivity"
+            android:theme="@style/NoActionBar"/>
+
+        <activity android:name=".QrCodeActivity"
+            android:theme="@style/NoActionBar"/>
+
+        <activity android:name=".GradeStudentActivity"
+            android:theme="@style/NoActionBar"/>
+
+        <service
+            android:name=".service.PollingService"
+            android:enabled="true"
+            android:exported="true">
+
+        </service>
+
     </application>
 
 </manifest>

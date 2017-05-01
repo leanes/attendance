@@ -42,7 +42,7 @@ public class AttendanceAdapter extends ArrayAdapter<WeeksNum> {
             view = convertView;
             holder = (ViewHolder) view.getTag();
         }
-        holder.attendance_time.setText(weeksNum.getWeeks()) ;
+        holder.attendance_time.setText(weeksNum.getWeeks()+"") ;
         holder.attendance_num.setText(weeksNum.getAttendance_num()+"人");
 
         return view ;
@@ -53,8 +53,6 @@ public class AttendanceAdapter extends ArrayAdapter<WeeksNum> {
         TextView attendance_time ;
         TextView attendance_num ;
     }
-
-
 
 
 }

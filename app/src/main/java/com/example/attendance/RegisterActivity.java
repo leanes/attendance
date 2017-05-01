@@ -76,7 +76,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
             return;
         }
 
-        if(result == 2) {
+        if(result == -1) {
             progress.dismiss();
             Toast.makeText(this, msg , Toast.LENGTH_LONG).show();
             return;
@@ -87,7 +87,6 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
             progress.dismiss();
             RegisterActivity.this.finish();
             Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-
             return;
         }
 
@@ -155,10 +154,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-               /* OkHttpClient client = new OkHttpClient.Builder()
-                        .connectTimeout(40 , TimeUnit.SECONDS)
-                        .readTimeout(60 , TimeUnit.SECONDS)
-                        .build() ;*/
+
                 OkHttpClient client = new OkHttpClient() ;
                 String json = registerCreate(teachers) ;
                 RequestBody body = RequestBody.create(JSON , json) ;

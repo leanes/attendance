@@ -1,9 +1,11 @@
 package com.example.attendance.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by 陈振聪 on 2017/4/8.
  */
-public class Teachers {
+public class Teachers implements Serializable {
     private String classTeacher;            //教师名字
     private String userPwd;                //密码
     private String schoolName ;             //学校名字

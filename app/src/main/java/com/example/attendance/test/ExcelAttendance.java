@@ -33,9 +33,11 @@ public class ExcelAttendance {
 //    private static  String excel_name = "/attendance.xlsx";
     private static Context mContext;
     private static WritableSheet sheet;
+    private static List<Students>studentsList ;
 
     public static void writeExcelAttendance(Context context, ArrayList<Students> studentses , String excel_name ) {
         mContext = context;
+        studentsList = studentses ;
         String[] title = {"班级", "姓名", "学号"};
         File sdDir = null;
         StringBuilder stringBuilder = new StringBuilder();
@@ -58,7 +60,7 @@ public class ExcelAttendance {
                     //将定义好的单元格添加到工作表中
                     sheet.addCell(label);
                 }
-                for (int j = 0 ; j < studentses.size() ; j++){
+                for (int j = 0 ; j < studentsList.size() ; j++){
                     String grade = studentses.get(j).getGrade() ;
                     String studentName = studentses.get(j).getStudent_name() ;
                     String studentId = studentses.get(j).getStudent_id() ;

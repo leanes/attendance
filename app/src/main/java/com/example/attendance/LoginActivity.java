@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,8 +16,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.attendance.bean.Teachers;
+import com.example.attendance.bean.User;
 import com.example.attendance.util.UrlConstance;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -71,12 +74,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
          *
          * */
         int resultCode = -1;
+
         String msg = null;
         try {
             resultCode = json.getInt("result");
+            JSONObject jsonObject = json.getJSONObject("data") ;
+            User user = User.sharedUser();
+            user.setAccessToken(jsonObject.getString("accessToken"));
+            Log.d("LoginActivity" , user.getAccessToken()) ;
             msg = json.getString("msg") ;
         } catch (JSONException e) {
-            Toast.makeText(this, "没有获取到网络的响应！", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "没有获取到网络的响应！" + e, Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
         switch(resultCode) {
@@ -211,6 +219,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                    public void onResponse(Call call, Response response) throws IOException {
                        if (response.isSuccessful()) {
                            String responseData = response.body().string() ;
+                           Log.d("LoginActivity" ,responseData) ;
                            try {
                                JSONObject jsonObject = new JSONObject(responseData) ;
                                sendMessage(MSG_LOGIN_RESULT, jsonObject);

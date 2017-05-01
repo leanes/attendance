@@ -28,6 +28,9 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_margin="3dip"
+            android:text="广州大学"
+            android:focusable="false"
+            android:clickable="false"
             android:imeOptions="actionNext"
             android:background="#ffff" />
     </LinearLayout>

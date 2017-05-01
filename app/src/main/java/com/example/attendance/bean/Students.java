@@ -9,9 +9,33 @@ public class Students implements Serializable{
     private String student_id ;
     private String student_name ;
     private String grade ;
+    private int classId ;
+    private String isAttend ;
+
+    public String getIsAttend() {
+        return isAttend;
+    }
+
+    public void setIsAttend(String isAttend) {
+        String isLate = null ;
+        if (isAttend.equals("0")){
+            isLate = "迟到" ;
+        }else if (isAttend.equals("1")){
+            isLate = "正常" ;
+        }
+        this.isAttend = isLate ;
+    }
 
     public Students() {
 
+    }
+
+    public int getClassId() {
+        return classId;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
     }
 
     public String getStudent_id() {

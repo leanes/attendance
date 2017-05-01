@@ -10,8 +10,29 @@ public class Coordinate implements Serializable {
     private int position ;          //从哪一节开始
     private int classNum ;          //连续上几节课
     private String className ;        //课程名
+    private int classId ;            //班级id
     private String grade ;              //上课班级
     private String classRoom ;          //课室
+    private int courseId ;           //课程Id
+
+
+
+    public int getClassId() {
+        return classId;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
 
     private WeeksNum weeksNum ;
 
@@ -61,12 +82,22 @@ public class Coordinate implements Serializable {
         this.grade = grade;
     }
 
-    public Coordinate(int position, int classNum, String className, String grade, String classRoom, String week) {
+    public Coordinate(int position, int classNum, String className, String grade, String classRoom, String week ) {
         this.position = position;
         this.classNum = classNum;
         this.className = className;
         this.grade = grade;
         this.classRoom = classRoom;
+        this.week = week;
+    }
+
+    public Coordinate(int position, int classNum, String className, String grade, String classRoom, int courseId, String week ) {
+        this.position = position;
+        this.classNum = classNum;
+        this.className = className;
+        this.grade = grade;
+        this.classRoom = classRoom;
+        this.courseId = courseId;
         this.week = week;
     }
 

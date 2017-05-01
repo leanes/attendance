@@ -7,11 +7,24 @@ import java.util.ArrayList;
  * Created by 陈振聪 on 2017/4/14.
  */
 public class Grade implements Serializable {
+    private int classId ;
+
     private String grade ;
+
+
 
     private ArrayList<Students>studentsList = new ArrayList<>() ;
 
     private Students students ;
+
+
+    public int getClassId() {
+        return classId;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
+    }
 
     public Students getStudents() {
         return students;
@@ -27,6 +40,9 @@ public class Grade implements Serializable {
 
     public void setStudentsList(ArrayList<Students> studentsList) {
         this.studentsList = studentsList;
+    }
+
+    public Grade() {
     }
 
     public String getGrade() {

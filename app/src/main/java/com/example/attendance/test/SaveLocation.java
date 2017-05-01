@@ -30,7 +30,7 @@ public class SaveLocation {
             try {
                 fout = new FileOutputStream(sdDir + path_name) ;
                 byte[] bytes = data.getBytes() ;
-                fout.write(bytes);
+                fout.write(bytes );
                 fout.close();
             } catch (Exception e) {
                 e.printStackTrace();

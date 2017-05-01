@@ -41,7 +41,7 @@ import jxl.write.biff.RowsExceededException;
 public class ExcelSchedule {
 
     private static final String excle_name = "/coursetable.xlsx" ;
-    private static final String file_name = "/coursetable.txt" ;
+    private static final String file_name = "/servercourse.txt" ;
     private static Context mContext;
     private static WritableSheet sheet;
 
@@ -107,15 +107,18 @@ public class ExcelSchedule {
 
     private static void setData(String jsonStr) {
         try {
-            JSONArray jsonArray = new JSONArray(jsonStr) ;
+            JSONObject object = new JSONObject(jsonStr);
+            JSONArray jsonArray = object.getJSONArray("data");
+
             int len = jsonArray.length() ;;
             for (int i = 0 ; i < len ; i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                String className = jsonObject.optString("className");
-                String classRoom = jsonObject.optString("classRoom");
-                String grade = jsonObject.optString("grade");
-                int classNum = jsonObject.optInt("classNum");
-                String week = jsonObject.optString("week");
+
+                String className = jsonObject.optString("courseName");
+                String classRoom = jsonObject.optString("courseAddress");
+                String grade = jsonObject.optString("courseGrade");
+                int classNum = jsonObject.optInt("courseNum");
+                String week = jsonObject.optString("courseWeek");
                 int position = i + 1;
                 Label positionLabel = new Label(0 , i + 1 , String.valueOf(position)) ;
                 Label classNameLabel = new Label(1 , i + 1 , className) ;

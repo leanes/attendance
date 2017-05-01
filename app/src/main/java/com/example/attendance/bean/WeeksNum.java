@@ -7,8 +7,17 @@ import java.util.ArrayList;
  * Created by 陈振聪 on 2017/4/13.
  */
 public class WeeksNum implements Serializable{
-    private String weeks ;
-    private String attendance_num ;
+    private int weeks ;
+    private int attendance_num ;
+    private int attenceId ;
+
+    public int getAttenceId() {
+        return attenceId;
+    }
+
+    public void setAttenceId(int attenceId) {
+        this.attenceId = attenceId;
+    }
 
     private Students students ;
     private ArrayList<Students>studentsArrayList ;
@@ -29,19 +38,19 @@ public class WeeksNum implements Serializable{
         this.studentsArrayList = studentsArrayList;
     }
 
-    public String getWeeks() {
+    public int getWeeks() {
         return weeks;
     }
 
-    public void setWeeks(String weeks) {
+    public void setWeeks(int weeks) {
         this.weeks = weeks;
     }
 
-    public String getAttendance_num() {
+    public int getAttendance_num() {
         return attendance_num;
     }
 
-    public void setAttendance_num(String attendance_num) {
+    public void setAttendance_num(int attendance_num) {
         this.attendance_num = attendance_num;
     }
 }

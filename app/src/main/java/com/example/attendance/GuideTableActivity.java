@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,9 +26,10 @@ import java.util.List;
 /**
  * Created by 陈振聪 on 2017/3/10.
  */
-public class GuideTableActivity extends Activity {
+public class GuideTableActivity extends AppCompatActivity {
     private GridView list_home ;
     private MyAdapter adapter ;
+    private TextView toolbarText ;
 
     private static String[] names = { "导出课程表" , "导出考勤情况" , "导出学生信息" } ;
 
@@ -34,6 +39,15 @@ public class GuideTableActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.home_toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar() ;
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        toolbarText = (TextView) findViewById(R.id.toolbar_text);
+        toolbarText.setText("导表功能");
         list_home = (GridView) findViewById(R.id.list_home);
         adapter = new MyAdapter(this , names , ids) ;
         list_home.setAdapter(adapter);
@@ -60,6 +74,17 @@ public class GuideTableActivity extends Activity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home :
+                finish();
+                break;
+            default:
+        }
+        return true ;
     }
 
     private class MyAdapter extends BaseAdapter {

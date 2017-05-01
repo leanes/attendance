@@ -36,6 +36,7 @@ public class StudentAdapter extends ArrayAdapter<Students> {
             holder.gradeText = (TextView) view.findViewById(R.id.grade);
             holder.nameText = (TextView) view.findViewById(R.id.student_name);
             holder.idText = (TextView) view.findViewById(R.id.student_id);
+            holder.attendText = (TextView) view.findViewById(R.id.isattend);
             view.setTag(holder);
         }else {
             view = convertView ;
@@ -44,6 +45,7 @@ public class StudentAdapter extends ArrayAdapter<Students> {
         holder.gradeText.setText(students.getGrade());
         holder.nameText.setText(students.getStudent_name());
         holder.idText.setText(students.getStudent_id());
+        holder.attendText.setText(students.getIsAttend());
 
         return view;
     }
@@ -51,5 +53,6 @@ public class StudentAdapter extends ArrayAdapter<Students> {
         TextView gradeText ;
         TextView nameText ;
         TextView idText ;
+        TextView attendText ;
     }
 }
