@@ -11,7 +11,15 @@ public class Grade implements Serializable {
 
     private String grade ;
 
+    private int number ;
 
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
 
     private ArrayList<Students>studentsList = new ArrayList<>() ;
 

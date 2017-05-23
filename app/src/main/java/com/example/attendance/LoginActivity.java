@@ -81,7 +81,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             JSONObject jsonObject = json.getJSONObject("data") ;
             User user = User.sharedUser();
             user.setAccessToken(jsonObject.getString("accessToken"));
-            Log.d("LoginActivity" , user.getAccessToken()) ;
             msg = json.getString("msg") ;
         } catch (JSONException e) {
             Toast.makeText(this, "没有获取到网络的响应！" + e, Toast.LENGTH_LONG).show();
@@ -219,7 +218,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                    public void onResponse(Call call, Response response) throws IOException {
                        if (response.isSuccessful()) {
                            String responseData = response.body().string() ;
-                           Log.d("LoginActivity" ,responseData) ;
                            try {
                                JSONObject jsonObject = new JSONObject(responseData) ;
                                sendMessage(MSG_LOGIN_RESULT, jsonObject);

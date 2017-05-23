@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ import okhttp3.Response;
 
 import static com.example.attendance.util.JsonUtil.signParse;
 import static com.example.attendance.util.JsonUtil.signSpan;
+import static com.example.attendance.util.JsonUtil.studentSpan;
 
 /**
  * 详细罗列考勤学生信息
@@ -72,8 +74,8 @@ public class ReportActivity extends AppCompatActivity {
 
         httpGet() ;
 
-        StudentAdapter adapter = new StudentAdapter(ReportActivity.this , R.layout.student_list , studentsArrayList) ;
-        listView.setAdapter(adapter) ;
+/*        StudentAdapter adapter = new StudentAdapter(ReportActivity.this , R.layout.student_list , studentsArrayList) ;
+        listView.setAdapter(adapter) ;*/
 
     }
 
@@ -96,11 +98,6 @@ public class ReportActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 Toast.makeText(ReportActivity.this, "请求失败" , Toast.LENGTH_SHORT).show();
-                                SaveLocation.readLocal(stringBuilder , sdDir , path_name);        //读取本地数据
-                                String jsonStr = stringBuilder.toString() ;
-                                signParse(jsonStr , studentsArrayList);
-                                StudentAdapter adapter = new StudentAdapter(ReportActivity.this , R.layout.student_list , studentsArrayList) ;
-                                listView.setAdapter(adapter) ;
                             }
                         });
                     }

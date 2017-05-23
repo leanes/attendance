@@ -69,7 +69,7 @@ public class ExcelStudent {
                     sheet.addCell(studentIdLabel);
                 }
                 wwbook.write();
-                Toast.makeText(mContext , "导出学生信息成功" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext , "导出学生信息成功在根目录下" , Toast.LENGTH_SHORT).show();
             } catch (WriteException e) {
                 e.printStackTrace();
             } catch (FileNotFoundException e) {

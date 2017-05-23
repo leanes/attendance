@@ -14,7 +14,7 @@ public class MyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        //接收MainActivity传过来的数据
+        //接收发送过来的数据
         String result = intent.getStringExtra("data") ;
         Log.d(TAG , "传过来的消息：" + result) ;
         //调用Message接口的方法

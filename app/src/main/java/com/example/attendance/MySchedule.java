@@ -78,6 +78,7 @@ public class MySchedule extends ViewGroup {
     public static final int DELETE_COURSES = 4 ;
     public static final int FAILURE = 5 ;
     public static final int EDITER_COURSES = 6 ;
+    private static final int ADD_EDI_VIEW = 7;
 
 
     public MySchedule(Context context, AttributeSet attrs) {
@@ -141,10 +142,23 @@ public class MySchedule extends ViewGroup {
                     JSONObject jsonObject = (JSONObject) msg.obj;
                     handleEditorRusult(jsonObject) ;
                     break;
+                case ADD_EDI_VIEW :
+                    list = (ArrayList<Coordinate>) msg.obj;
+                    handleAddEdi(list) ;
 
             }
         }
     };
+
+    private void handleAddEdi(ArrayList<Coordinate> arrayList) {
+        for (TextView textView : textViewList ){
+            removeView(textView);
+        }
+        for (int i = 0 ; i < list.size() ; i++)
+        {
+            addView(arrayList.get(i));
+        }
+    }
 
     //编辑课程
     private void handleEditorRusult(JSONObject jsonObject) {
@@ -160,6 +174,7 @@ public class MySchedule extends ViewGroup {
         switch(resultCode) {
             case 1:
                 Toast.makeText(getContext() , msg, Toast.LENGTH_SHORT).show();
+                httpEdiGet();
                 break;
             case -1:
                 Toast.makeText(getContext(), msg , Toast.LENGTH_SHORT).show();
@@ -218,7 +233,6 @@ public class MySchedule extends ViewGroup {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -292,7 +306,6 @@ public class MySchedule extends ViewGroup {
                             Log.d("TableActivityADD" , responseData) ;
                             try {
                                 JSONObject jsonObject = new JSONObject(responseData) ;
-                                String mm = jsonObject.getString("msg") ;
                                 sendMessage(UPLOAD_COURSES , jsonObject);
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -303,7 +316,6 @@ public class MySchedule extends ViewGroup {
 
             }
         }).start();
-        httpGet();
     }
 
 
@@ -386,8 +398,10 @@ public class MySchedule extends ViewGroup {
         btnAtten.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                int selectWeek = position % 7 + 1 ;
                 Intent intent = new Intent(getContext() , QrCodeActivity.class) ;
                 intent.putExtra("courseId" , courseId) ;
+                intent.putExtra("week" , selectWeek) ;
                 context.startActivity(intent);
             }
         });
@@ -493,6 +507,40 @@ public class MySchedule extends ViewGroup {
         }).start();
     }
 
+    private void httpEdiGet() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient() ;
+                Request request = new Request.Builder()
+                        .url(UrlConstance.COURSES_INFO)
+                        .build() ;
+                Call call = client.newCall(request) ;
+                call.enqueue(new Callback() {
+                    //请求失败回调
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        sendMessage(FAILURE , "请求失败！" + e);
+
+                    }
+
+                    //请求成功时回调
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        if (response.isSuccessful()){
+                            String responseData = response.body().string() ;
+                            Log.d("TableActivity" , responseData) ;
+                            SaveLocation.saveLocal(responseData , sdDir , file_name);
+                            JsonUtil.dataParse(responseData , list ) ;
+                            sendMessage(ADD_EDI_VIEW , list);       //添加视图到课程表中
+                            sendMessage(SAVE_COURSES , list);   //保存数据到本地
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
+
 
     //删除课程表
 
@@ -579,7 +627,6 @@ public class MySchedule extends ViewGroup {
                 String res = new String(bytes , "utf-8") ;
                 fin.close();
                 dataParse(res , list);
-                //此时已经将读取的数据全部存入到list中，只需要将list中的view显示出来就可，不需要保存
                 for (int i = 0 ; i < list.size() ; i++)
                 {
                     addView(list.get(i));
@@ -621,10 +668,8 @@ public class MySchedule extends ViewGroup {
                             Log.d("TableActivity" , responseData) ;
                             SaveLocation.saveLocal(responseData , sdDir , file_name);
                             JsonUtil.dataParse(responseData , list ) ;
-
-                            sendMessage(ADD_VIEW , list);
-                            sendMessage(SAVE_COURSES , list);
-
+                            sendMessage(ADD_VIEW , list);       //添加视图到课程表中
+                            sendMessage(SAVE_COURSES , list);   //保存数据到本地
                         }
                     }
                 });

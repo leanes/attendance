@@ -90,12 +90,8 @@ public class AttendHomeActivity extends AppCompatActivity {
             @Override
             public void run() {
                 OkHttpClient client = new OkHttpClient() ;
-                String json = "{\"accessToken\":"+ User.sharedUser().getAccessToken() + "}" ;
-                RequestBody body = RequestBody.create(JSON , json) ;
                 Request request = new Request.Builder()
-//                        .url("http://192.168.191.1:8080/attendance.json")
                         .url(UrlConstance.COURSES_INFO)
-//                        .post(body)
                         .build() ;
                 Call call = client.newCall(request) ;
                 call.enqueue(new Callback() {
@@ -110,7 +106,6 @@ public class AttendHomeActivity extends AppCompatActivity {
                               try{
                                   SaveLocation.readLocal(stringBuilder , sdDir , path_name);        //读取本地数据
                                   String jsonStr = stringBuilder.toString() ;
-//                                  attendancePare(jsonStr , data) ;
                                   dataParse(jsonStr , data);
                                   AttendAdapter adapter = new AttendAdapter(AttendHomeActivity.this , R.layout.list_attend , data) ;
                                   attendlist.setAdapter(adapter);
@@ -151,7 +146,6 @@ public class AttendHomeActivity extends AppCompatActivity {
                                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                             Coordinate coordinate = data.get(position) ;
                                             Intent intent = new Intent(AttendHomeActivity.this , AttendanceActivity.class) ;
-
                                             intent.putExtra("coordinate" , coordinate) ;
                                             intent.putExtra("tag" , tag) ;
                                             startActivity(intent);

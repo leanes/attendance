@@ -103,34 +103,6 @@ public class AttendanceActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 Toast.makeText(AttendanceActivity.this, "请求失败" , Toast.LENGTH_SHORT).show();
-                                SaveLocation.readLocal(stringBuilder , sdDir , path_name);        //读取本地数据
-                                String jsonStr = stringBuilder.toString() ;
-                                attendParse(jsonStr , weeksNumArrayList);
-                                AttendanceAdapter adapter = new AttendanceAdapter(AttendanceActivity.this , R.layout.attendance_list , weeksNumArrayList) ;
-                                listView.setAdapter(adapter);
-
-                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        WeeksNum weeksNum = weeksNumArrayList.get(position) ;
-                                        attendId = weeksNum.getAttenceId() ;
-                                        if (tag == 1){
-                                            Intent intentReport = new Intent(AttendanceActivity.this , ReportActivity.class) ;
-                                            intentReport.putExtra("weekNum" , weeksNum) ;
-                                            intentReport.putExtra("courseId" , courseId) ;
-                                            startActivity(intentReport) ;
-                                        }else if (tag == 2){
-                                            String className = coordinate.getClassName() ;
-                                            int section = coordinate.getPosition()/7 + 1;
-                                            int week = coordinate.getPosition()%7 + 1 ;
-                                            int weeks = weeksNum.getWeeks() ;
-                                            httpGetStu();
-                                            ArrayList<Students>studentses = weeksNum.getStudentsArrayList() ;
-                                            ExcelAttendance.writeExcelAttendance(AttendanceActivity.this , studentses , "/"+className+weeks+"周"+week+"第"+section+"节"+".xlsx");
-                                        }
-
-                                    }
-                                });
                             }
                         });
                     }
@@ -147,7 +119,6 @@ public class AttendanceActivity extends AppCompatActivity {
                                 public void run() {
                                     AttendanceAdapter adapter = new AttendanceAdapter(AttendanceActivity.this , R.layout.attendance_list , weeksNumArrayList) ;
                                     listView.setAdapter(adapter);
-
                                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                         @Override
                                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -156,18 +127,13 @@ public class AttendanceActivity extends AppCompatActivity {
                                             if (tag == 1){
                                                 Intent intentReport = new Intent(AttendanceActivity.this , ReportActivity.class) ;
                                                 intentReport.putExtra("weekNum" , weeksNum) ;
-                                                intentReport.putExtra("courseId" , courseId) ;
                                                 startActivity(intentReport) ;
                                             }else if (tag == 2){
                                                 className = coordinate.getClassName() ;
                                                 section = coordinate.getPosition()/7 + 1;
                                                 week = coordinate.getPosition()%7 + 1 ;
                                                 weeks = weeksNum.getWeeks() ;
-
-
                                                 httpGetStu() ;
-
-//                                                ExcelAttendance.writeExcelAttendance(AttendanceActivity.this , studentses , "/"+className+weeks+"周"+week+"第"+section+"节"+".xlsx");
                                             }
 
                                         }
@@ -213,7 +179,7 @@ public class AttendanceActivity extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ExcelAttendance.writeExcelAttendance(AttendanceActivity.this , studentses , "/"+className+weeks+"周"+week+"第"+section+"节"+".xlsx");
+                                    ExcelAttendance.writeExcelAttendance(AttendanceActivity.this , studentses , "/"+className+"第"+ weeks + "周星期" + week+"第"+section+"节"+".xlsx");
                                 }
                             });
                         }
@@ -223,23 +189,11 @@ public class AttendanceActivity extends AppCompatActivity {
         }).start();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (tag == 1){
-            getMenuInflater().inflate(R.menu.toolbar , menu) ;
-        }
 
-        return true ;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            /*case R.id.add :
-                Intent code = new Intent(AttendanceActivity.this , QrCodeActivity.class) ;
-                code.putExtra("courseId" , courseId) ;
-                startActivity(code);
-                break;*/
             case android.R.id.home :
                 finish();
                 break;

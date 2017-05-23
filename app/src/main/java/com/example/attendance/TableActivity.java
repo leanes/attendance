@@ -89,7 +89,6 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
         if (!isClick) {
             mySchedule.read(2);
         }
-        /*mySchedule.read(2) ;*/
     }
 
 
@@ -201,7 +200,7 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(TableActivity.this, "Failure :", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(TableActivity.this, "获取班级信息失败 :", Toast.LENGTH_SHORT).show();
                             }
                         });
 

@@ -38,7 +38,7 @@ public class ExcelAttendance {
     public static void writeExcelAttendance(Context context, ArrayList<Students> studentses , String excel_name ) {
         mContext = context;
         studentsList = studentses ;
-        String[] title = {"班级", "姓名", "学号"};
+        String[] title = {"班级", "姓名", "学号" , "考勤"};
         File sdDir = null;
         StringBuilder stringBuilder = new StringBuilder();
         sdDir = Environment.getExternalStorageDirectory(); //获取根目录
@@ -64,15 +64,18 @@ public class ExcelAttendance {
                     String grade = studentses.get(j).getGrade() ;
                     String studentName = studentses.get(j).getStudent_name() ;
                     String studentId = studentses.get(j).getStudent_id() ;
+                    String isLate = studentses.get(j).getIsAttend() ;
                     Label gradeLabel = new Label(0 , j + 1 , grade) ;
                     Label studentNameLabel = new Label(1 , j + 1 , studentName) ;
                     Label studentIdLabel = new Label(2 , j + 1 , studentId) ;
+                    Label isLateLabel = new Label(3 , j + 1 , isLate) ;
                     sheet.addCell(gradeLabel);
                     sheet.addCell(studentNameLabel);
                     sheet.addCell(studentIdLabel);
+                    sheet.addCell(isLateLabel);
                 }
                 wwbook.write();
-                Toast.makeText(mContext , "成功导出已考勤学生信息" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext , "成功导出已考勤学生信息在根目录下" , Toast.LENGTH_SHORT).show();
             } catch (WriteException e) {
                 e.printStackTrace();
             } catch (FileNotFoundException e) {

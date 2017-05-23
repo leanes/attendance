@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,8 @@ public class HomeActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+        TextView toolbarText = (TextView) findViewById(R.id.toolbar_lefttext);
+        toolbarText.setText("课堂考勤教师端");
         list_home = (GridView) findViewById(R.id.list_home);
         adapter = new MyAdapter(this , names , ids) ;
         list_home.setAdapter(adapter);
@@ -45,7 +49,6 @@ public class HomeActivity extends Activity{
                     case 1 :
                         Intent attend = new Intent(HomeActivity.this , AttendHomeActivity.class) ;
                         attend.putExtra("tag" , 1) ;
-
                         startActivity(attend);
                         break;
                     case 2 :

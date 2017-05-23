@@ -41,8 +41,6 @@ public class PollingService extends Service {
     public static final int FAILURE = 0;
     public static final int SEND = 1;
 
-    private Notification mNotification;
-    private NotificationManager mManager;
 
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -60,7 +58,6 @@ public class PollingService extends Service {
     private void sendLocalBroadcast(String string) {
         Intent intent=new Intent("com.example.attendance.POLLING_BROADCAST") ;
         intent.putExtra("data" , string) ;
-        Log.d(TAG , "发送消息："+ string) ;
         sendBroadcast(intent);
     }
 
@@ -123,7 +120,7 @@ public class PollingService extends Service {
                 call.enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        sendMessage(FAILURE, "请求失败");
+//                        sendMessage(FAILURE, "请求失败");
                     }
 
                     @Override

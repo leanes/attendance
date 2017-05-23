@@ -170,7 +170,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(RegisterActivity.this, "Failure :" , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "请求失败" , Toast.LENGTH_SHORT).show();
                             }
                         });
 

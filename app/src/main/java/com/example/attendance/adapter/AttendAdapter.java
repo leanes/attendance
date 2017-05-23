@@ -40,7 +40,7 @@ public class AttendAdapter extends ArrayAdapter<Coordinate> {
         }
         holder.attendGrade.setText("第" + (coordinate.getPosition()/7 + 1 ) + "节课");
         holder.attendClass.setText(coordinate.getClassName());
-        holder.attendWeek.setText("周" + (coordinate.getPosition()%7 + 1) );
+        holder.attendWeek.setText("星期" + (coordinate.getPosition()%7 + 1) );
 
         return view;
     }

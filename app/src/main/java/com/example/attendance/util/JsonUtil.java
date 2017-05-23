@@ -116,20 +116,19 @@ public class JsonUtil {
     public static String dataEditor(Coordinate coordinates) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("coursePosition", coordinates.getPosition());
-            jsonObject.put("courseNum", coordinates.getClassNum());
-            jsonObject.put("courseName", coordinates.getClassName());
-            jsonObject.put("courseAddress", coordinates.getClassRoom());
-            jsonObject.put("classId", Cid.sharedCid().getCid());
-            jsonObject.put("courseWeek", coordinates.getWeek());
-            jsonObject.put("courseId", coordinates.getCourseId());
-            jsonObject.put("accessToken", User.sharedUser().getAccessToken());
+            jsonObject.put("coursePosition", coordinates.getPosition());    //课程的周几第几节课
+            jsonObject.put("courseNum", coordinates.getClassNum());         //课程节数
+            jsonObject.put("courseName", coordinates.getClassName());       //课程名称
+            jsonObject.put("courseAddress", coordinates.getClassRoom());    //课程课室
+            jsonObject.put("classId", Cid.sharedCid().getCid());            //上课班级id
+            jsonObject.put("courseWeek", coordinates.getWeek());            //课程起始周
+            jsonObject.put("courseId", coordinates.getCourseId());          //课程的id
+            jsonObject.put("accessToken", User.sharedUser().getAccessToken());  //教师的身份验证码
         } catch (JSONException e) {
             e.printStackTrace();
         }
         String s = jsonObject.toString();
         return s;
-
     }
 
 
@@ -285,7 +284,7 @@ public class JsonUtil {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("accessToken", User.sharedUser().getAccessToken());
-            jsonObject.put("courseId", courseId);
+            jsonObject.put("courseId", courseId);               //课程id
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -334,15 +333,16 @@ public class JsonUtil {
     }
 
     /**
-     * {"result":1,"msg":"\u83b7\u53d6\u6210\u529f","data":[{"studentAttenceTime":1493557077,"isLate":1,"stuName":"\u5468\u6b66\u6770","stuNumber":"1300002081","className":"\u8ba1\u79d1137"},
-     * {"studentAttenceTime":1493558107,"isLate":0,"stuName":"\u674e\u534e","stuNumber":"1300002001","className":"\u8ba1\u79d1137"}]}
+     * {"result":1,"msg":"\u83b7\u53d6\u6210\u529f","data":[{"student_id":125,"stuName":"\u5f20\u73b2","stuNumber":"1300002092","className":"\u8ba1\u79d1137\u73ed","isLate":"-1"},
+     * {"student_id":126,"stuName":"\u9648\u6797\u6d69","stuNumber":"1300002093","className":"\u8ba1\u79d1137\u73ed","isLate":"-1"},
+     * {"student_id":127,"stuName":"\u738b\u5e05\u7ca4","stuNumber":"1300002094","className":"\u8ba1\u79d1137\u73ed","isLate":"-1"},
+     * {"student_id":128,"stuName":"\u5f20\u78a7\u7ea2","stuNumber":"1300002095","className":"\u8ba1\u79d1137\u73ed","isLate":"-1"}]}
      * 解析签到学生
      */
     public static void signParse(String data, List<Students> list) {
         try {
             list.clear();
             JSONObject jsonObject = new JSONObject(data);
-
             JSONArray jsonArray = jsonObject.getJSONArray("data");
             for (int i = 0; i < jsonArray.length(); i++) {
                 Students students = new Students();
@@ -351,6 +351,8 @@ public class JsonUtil {
                 students.setStudent_id(object.getString("stuNumber"));
                 students.setGrade(object.getString("className"));
                 students.setIsAttend(String.valueOf(object.getInt("isLate")));
+                students.setImageUrl(object.getString("imgURL"));
+                students.setSignTime(object.getInt("studentAttenceTime")) ; //(Integer.parseInt(object.getString("studentAttenceTime")));
                 list.add(students);
             }
         } catch (JSONException e) {
@@ -373,9 +375,9 @@ public class JsonUtil {
     }
 
     /**
-     * {"result":1,"msg":"\u83b7\u53d6\u6210\u529f","data":[{"classId":5,"className":"\u7f51\u7edc\u5de5\u7a0b133"},
-     * {"classId":6,"className":"\u8f6f\u4ef6\u5de5\u7a0b135"},
-     * {"classId":1,"className":"\u8ba1\u79d1137"},{"classId":2,"className":"\u8ba1\u79d1138"}]}
+     * {"result":1,"msg":"\u83b7\u53d6\u6210\u529f","data":[{"classId":1,"className":"\u8ba1\u79d1137","studentNumber":3},
+     * {"classId":2,"className":"\u8ba1\u79d1138","studentNumber":2},{"classId":3,"className":"\u7f51\u7edc\u5de5\u7a0b131","studentNumber":1},
+     * {"classId":5,"className":"\u7f51\u7edc\u5de5\u7a0b133","studentNumber":1},{"classId":6,"className":"\u8f6f\u4ef6\u5de5\u7a0b135","studentNumber":0}]}
      * 解析全部班级
      */
     public static void gradeAllParse(String data, List<Grade> list) {
@@ -387,8 +389,9 @@ public class JsonUtil {
             for (int i = 0; i < jsonArray.length(); i++) {
                 Grade grade = new Grade();
                 JSONObject object = jsonArray.getJSONObject(i);
-                grade.setClassId(object.getInt("classId"));
-                grade.setGrade(object.getString("className"));
+                grade.setClassId(object.getInt("classId"));     //班级id
+                grade.setGrade(object.getString("className"));  //班级名称
+                grade.setNumber(object.getInt("studentNumber")); //该班级学生总人数
                 list.add(grade);
             }
         } catch (JSONException e) {

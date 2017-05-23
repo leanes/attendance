@@ -31,18 +31,21 @@ public class GradeStudentAdapter extends ArrayAdapter<Grade> {
             view = LayoutInflater.from(getContext()).inflate(resourceId , parent , false) ;
             holder = new ViewHolder() ;
             holder.attendGrade = (TextView) view.findViewById(R.id.grade);
+            holder.numberText = (TextView) view.findViewById(R.id.number);
             view.setTag(holder);
         }else {
             view = convertView ;
             holder = (ViewHolder) view.getTag();
         }
         holder.attendGrade.setText(grade.getGrade());
+        holder.numberText.setText(grade.getNumber() + "位");
 
         return view;
     }
 
     class ViewHolder{
         TextView attendGrade ;
+        TextView numberText ;
     }
 
 }

@@ -1,5 +1,7 @@
 package com.example.attendance;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -39,6 +41,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import okhttp3.Call;
@@ -63,6 +66,7 @@ public class QrCodeActivity extends AppCompatActivity implements View.OnClickLis
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private List<String>weekList ;
     private int week = 0 ;
+    private int selectWeek ;
     private int courseId ;
     private PopupWindow popwindow;
     private ListView lv_list;
@@ -83,7 +87,7 @@ public class QrCodeActivity extends AppCompatActivity implements View.OnClickLis
         Intent intent = getIntent() ;
         Bundle bundle = intent.getExtras() ;
         courseId = bundle.getInt("courseId") ;
-
+        selectWeek = bundle.getInt("week") ;
         String[] weeks = getResources().getStringArray(R.array.weeks) ;
         weekList = new ArrayList<>() ;
         for (int i = 0 ; i < weeks.length ; i++){
@@ -111,11 +115,8 @@ public class QrCodeActivity extends AppCompatActivity implements View.OnClickLis
             myReceiver = new MyReceiver();
             intentFilter = new IntentFilter("com.example.attendance.POLLING_BROADCAST");
             registerReceiver(myReceiver, intentFilter);
-            Log.d("QrCodeActivity" , "注册广播") ;
-
             //因为这里需要注入Message，所以不能在AndroidManifest文件中静态注册广播接收器
             myReceiver.setMessage(this);
-
             intentService = new Intent(this , PollingService.class) ;
             serviceThread() ;
 
@@ -132,7 +133,6 @@ public class QrCodeActivity extends AppCompatActivity implements View.OnClickLis
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    Log.d("QrCodeActivity","开启服务") ;
                     startService(intentService) ;
                 }
 
@@ -157,7 +157,6 @@ public class QrCodeActivity extends AppCompatActivity implements View.OnClickLis
             BitMatrix matrix = new MultiFormatWriter().encode(s , BarcodeFormat.QR_CODE , 300 , 300) ;
             int width = matrix.getWidth() ;
             int height = matrix.getHeight() ;
-
             int[] pixels = new int[width * height] ;
             for (int y = 0 ; y < height ; y++){
                 for (int x = 0 ; x < width ; x++){
@@ -170,7 +169,6 @@ public class QrCodeActivity extends AppCompatActivity implements View.OnClickLis
             }
             Bitmap bitmap = Bitmap.createBitmap(width , height , Bitmap.Config.ARGB_8888) ;
             bitmap.setPixels(pixels , 0 , width , 0 , 0 , width , height);
-
         return bitmap;
     }
 
@@ -198,7 +196,6 @@ public class QrCodeActivity extends AppCompatActivity implements View.OnClickLis
                                 Toast.makeText(QrCodeActivity.this, "请求失败", Toast.LENGTH_SHORT).show();
                             }
                         });
-
                     }
 
                     //请求成功时回调
@@ -226,6 +223,7 @@ public class QrCodeActivity extends AppCompatActivity implements View.OnClickLis
                                         Bitmap temp = crateBitmap(new String(codeSting.getBytes() , "ISO-8859-1"));
                                         imageView.setImageBitmap(temp);
 
+
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -249,14 +247,48 @@ public class QrCodeActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.attendanbtn :
                 if (accountweekEdit.getText().toString().trim().equals("")){
-                    Toast.makeText(this , "请选择考勤第几周" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this , "请选择当前是第几周" , Toast.LENGTH_SHORT).show();
                 }else {
                     week = Integer.parseInt(accountweekEdit.getText().toString().trim()) ;
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(QrCodeActivity.this) ;
+                    dialog.setTitle("提示") ;
+                    dialog.setMessage("你选择考勤的是第" + week + "周的星期"+ selectWeek) ;
+                    dialog.setCancelable(true) ;
+                    dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            int thisWeek = getWeek() ;
+                            if (thisWeek == selectWeek){
+                                httpGre();
+                            }else {
+                                Toast.makeText(QrCodeActivity.this , "当前不是该课程的考勤日期" , Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+                    dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show() ;
                 }
-                httpGre() ;
                 break;
         }
     }
+
+    private int getWeek() {
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date date = new java.util.Date() ;
+        calendar.setTime(date);
+        int w =  calendar.get(Calendar.DAY_OF_WEEK) - 1 ;
+        if(w == 0){
+            w = 7 ;
+        }
+        return w;
+    }
+
 
     private void showPopwindow() {
         initListview();

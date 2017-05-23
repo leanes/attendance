@@ -139,7 +139,7 @@ public class StudentMsgActivity extends AppCompatActivity {
                                     exportbtn.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            ExcelStudent.writeExcelStudent(StudentMsgActivity.this , list , "/"+grade.getGrade()+".xlsx");
+                                            ExcelStudent.writeExcelStudent(StudentMsgActivity.this , list , "/"+grade.getGrade()+"学生信息表.xlsx");
                                         }
                                     });
                                 }

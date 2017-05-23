@@ -47,7 +47,7 @@ public class ExcelSchedule {
 
     public static void writeExcelSchedule(Context context, List<Coordinate> coordinates) {
         mContext = context ;
-        String[] title = {"编号", "课 程 名 称", "  课  室  ", " 上 课 班 级 " , "  节  数  " , " 哪 几 周 "};
+        String[] title = {"编号", "课 程 名 称",  "  课  室  ", " 上 课 班 级 " , "星期几" , "第几节" , "  节  数  " , " 起 始 周 "};
         File sdDir = null ;
         StringBuilder stringBuilder = new StringBuilder() ;
         sdDir = Environment.getExternalStorageDirectory(); //获取根目录
@@ -109,31 +109,36 @@ public class ExcelSchedule {
         try {
             JSONObject object = new JSONObject(jsonStr);
             JSONArray jsonArray = object.getJSONArray("data");
-
             int len = jsonArray.length() ;;
             for (int i = 0 ; i < len ; i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-
                 String className = jsonObject.optString("courseName");
                 String classRoom = jsonObject.optString("courseAddress");
+                int position = jsonObject.optInt("coursePosition") ;
+                int week = position %7 + 1 ;
+                int section = position / 7 + 1 ;
                 String grade = jsonObject.optString("courseGrade");
                 int classNum = jsonObject.optInt("courseNum");
-                String week = jsonObject.optString("courseWeek");
-                int position = i + 1;
-                Label positionLabel = new Label(0 , i + 1 , String.valueOf(position)) ;
+                String weeks = jsonObject.optString("courseWeek");
+                int id = i + 1;
+                Label idLabel = new Label(0 , i + 1 , String.valueOf(id)) ;
                 Label classNameLabel = new Label(1 , i + 1 , className) ;
                 Label classRoomLabel = new Label(2 , i + 1 , classRoom) ;
                 Label gradeLabel = new Label(3 , i + 1 , grade) ;
-                Label classNumLabel = new Label(4 , i + 1 , String.valueOf(classNum)) ;
-                Label weekLabel = new Label(5 , i + 1 , week) ;
-                sheet.addCell(positionLabel);
+                Label weekLabel = new Label(4 , i + 1 , String.valueOf(week)) ;
+                Label sectionLabel = new Label(5 , i + 1 , String.valueOf(section)) ;
+                Label classNumLabel = new Label(6 , i + 1 , String.valueOf(classNum)) ;
+                Label weeksLabel = new Label(7 , i + 1 , weeks) ;
+                sheet.addCell(idLabel);
                 sheet.addCell(classNameLabel);
+                sheet.addCell(weekLabel);
+                sheet.addCell(sectionLabel);
                 sheet.addCell(classRoomLabel);
                 sheet.addCell(gradeLabel);
                 sheet.addCell(classNumLabel);
-                sheet.addCell(weekLabel);
+                sheet.addCell(weeksLabel);
             }
-            Toast.makeText(mContext , "导出课程表成功" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext , "导出课程表成功在根目录下" , Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (RowsExceededException e) {

@@ -22,7 +22,8 @@
 
         <activity android:name=".RegisterActivity" />
 
-        <activity android:name=".HomeActivity"/>
+        <activity android:name=".HomeActivity"
+            android:theme="@style/NoActionBar"/>
 
         <activity android:name=".TableActivity"
             android:theme="@style/NoActionBar"/>
@@ -53,7 +54,6 @@
             android:name=".service.PollingService"
             android:enabled="true"
             android:exported="true">
-
         </service>
 
     </application>
